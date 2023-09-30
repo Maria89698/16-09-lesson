@@ -3,7 +3,7 @@ const update = {
 
 };
 
-function updateMovieById(id, update) {
+async function updateMovieById(id, update) {
     const options = {
         method: "PATCH",
         
@@ -13,10 +13,18 @@ function updateMovieById(id, update) {
 
         body: JSON.stringify(update),
     }
-    return fetch(`${BASE_URL}/movies/${id}`, options)
+
+    try {
+        const movie = await fetch(`${BASE_URL}/movies/${id}`, options)
+        const parcedMovie = await movie.json()
+        return parcedMovie
+    } catch (error) {
+        console.log(error);
+    }
+    
 };
 
 updateMovieById(1, {
     "title": "New JS",
     "director": "Me"
-}).then(res => console.log(res))
+}).then(res => console.log(res));
